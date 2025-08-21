@@ -3,29 +3,17 @@
 export function getCss() {
     return `
   :root {
-      --bg-color: #ffffff;
-      --text-color: #1a1a1a;
-      --sidebar-bg: #f5f7fa;
-      --border-color: #d1d5db;
-      --accent-color: #2563eb;
-      --accent-color-light: #dbeafe;
-      --code-bg: #f8fafc;
-      --table-header-bg: #f1f5f9;
-      --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1);
-      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.15), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  }
-  
-  @media (prefers-color-scheme: dark) {
-      :root {
-          --bg-color: #121212;
-          --text-color: #e0e0e0;
-          --sidebar-bg: #1e1e1e;
-          --border-color: #333333;
-          --accent-color: #58a6ff;
-          --accent-color-light: #1f2937;
-          --code-bg: #282c34;
-          --table-header-bg: #1e1e1e;
-      }
+      --bg-color: #f9fafb;
+      --sidebar-bg: #ffffff;
+      --content-bg: #ffffff;
+      --text-color: #1f2937;
+      --text-color-light: #6b7280;
+      --border-color: #e5e7eb;
+      --accent-color: #ffc107; /* Rippling Yellow */
+      --accent-color-dark: #e0a800;
+      --accent-color-light: #fff8e1;
+      --code-bg: #f3f4f6;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   }
   
   * {
@@ -56,10 +44,23 @@ export function getCss() {
       padding: 1.5rem;
   }
   
-  .sidebar h1 {
-      font-size: 1.25rem;
-      margin: 0 0 2rem 0;
-      font-weight: 600;
+  .sidebar-header {
+      margin-bottom: 2rem;
+      padding-left: 0.75rem;
+  }
+  
+  .main-title {
+      display: block;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-color);
+  }
+  
+  .sub-title {
+      display: block;
+      font-size: 1rem;
+      color: var(--text-color-light);
+      margin-top: 0.25rem;
   }
   
   .sidebar nav ul {
@@ -81,13 +82,6 @@ export function getCss() {
   .sidebar nav a:hover {
       background-color: var(--accent-color-light);
   }
-  
-  /* Add a class for the active link later if you want */
-  /* .sidebar nav a.active {
-      background-color: var(--accent-color-light);
-      color: var(--accent-color);
-      font-weight: 500;
-  } */
   
   .content {
       flex-grow: 1;
@@ -124,14 +118,10 @@ export function getCss() {
       margin-bottom: 1rem;
   }
   
-  p, li {
-      font-size: 1rem;
-      color: var(--text-color);
-  }
-  
   a {
-      color: var(--accent-color);
+      color: var(--accent-color-dark);
       text-decoration: none;
+      font-weight: 500;
   }
   
   a:hover {
@@ -180,7 +170,7 @@ export function getCss() {
   }
   
   th {
-      background-color: var(--table-header-bg);
+      background-color: var(--sidebar-bg);
       font-weight: 600;
   }
   
@@ -188,12 +178,8 @@ export function getCss() {
       border-bottom: none;
   }
   
-  tbody tr:nth-child(even) {
-      background-color: var(--sidebar-bg);
-  }
-  
   .mermaid {
-      background-color: var(--bg-color);
+      background-color: #ffffff;
       padding: 1rem;
       border-radius: 8px;
       border: 1px solid var(--border-color);

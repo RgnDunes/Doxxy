@@ -7,7 +7,6 @@ import * as prompts from './prompt-builder.js';
 import { getCss } from './templates/css.js';
 import { getJs } from './templates/js.js';
 
-// Defines the overall structure and content generation logic for the site
 const siteStructure = [
     {
         fileName: "index.html",
@@ -24,11 +23,9 @@ const siteStructure = [
         title: "Getting Started",
         prompt: prompts.buildGettingStartedPagePrompt,
     },
-    // Add more pages here as you create their prompts
 ];
 
-// Generates the main HTML shell for every page
-function getHtmlShell(title, content) {
+function getHtmlShell(title, content, projectName) {
     return `
 <!DOCTYPE html>
 <html lang="en">
@@ -41,7 +38,10 @@ function getHtmlShell(title, content) {
 <body>
     <div class="container">
         <aside class="sidebar">
-            <h1>${title.split(' | ')[1]}</h1>
+            <div class="sidebar-header">
+                <span class="main-title">Doxxy</span>
+                <span class="sub-title">${projectName}</span>
+            </div>
             <nav>
                 <ul>
                     <li><a href="index.html">Overview</a></li>
@@ -68,7 +68,6 @@ function getHtmlShell(title, content) {
 export async function generateSite(outputDir, summary) {
     await fs.mkdir(path.join(outputDir, 'assets'), { recursive: true });
 
-    // Write static assets
     await fs.writeFile(path.join(outputDir, 'assets/style.css'), getCss());
     await fs.writeFile(path.join(outputDir, 'assets/app.js'), getJs());
 
@@ -76,10 +75,10 @@ export async function generateSite(outputDir, summary) {
         console.log(`   Generating page: ${page.title}...`);
         const pagePrompt = page.prompt(summary);
         let pageContent = await getAiResponse(pagePrompt);
-    
+
         pageContent = pageContent.replace(/^```html\n?/, '').replace(/\n?```$/, '');
         
-        const fullHtml = getHtmlShell(`${page.title} | ${summary.projectName}`, pageContent);
+        const fullHtml = getHtmlShell(`${page.title} | ${summary.projectName}`, pageContent, summary.projectName);
         await fs.writeFile(path.join(outputDir, page.fileName), fullHtml);
     }
 }
