@@ -55,12 +55,9 @@ export function buildArchitecturePagePrompt(summary) {
       "Architecture",
       `
       Generate a detailed architectural overview with three sections:
-
-      1.  **File Structure Organization**: Create a section that describes the purpose of the main directories (e.g., 'src', 'components', 'pages', 'api', 'lib', 'services'). If you detect evidence of a monorepo (e.g., 'packages' or 'apps' folders), add a subsection explaining how the different packages interact.
-
-      2.  **High-Level System Overview**: Create a detailed Mermaid 'graph TD' diagram. This diagram should be comprehensive, inspired by diagrams used to document complex web applications. Organize it into logical subgraphs representing conceptual layers like 'Frontend Components', 'State Management', 'Data & Caching', 'Network Layer', and 'Backend Services/APIs'. Map the key modules, components, and services from the project summary into their appropriate subgraphs and show the data flow between them.
-
-      3.  **Request Lifecycle**: Create a 'sequenceDiagram' in Mermaid that illustrates a typical user request lifecycle, from the UI through to the backend and back.
+      1.  **File Structure Organization**: Describe the purpose of the main directories. If you detect a monorepo, add a subsection explaining how the packages interact.
+      2.  **High-Level System Overview**: Create a detailed Mermaid 'graph TD' diagram showing the system's conceptual layers (e.g., 'Frontend', 'State Management', 'Backend Services') and the data flow between them.
+      3.  **Request Lifecycle**: Create a 'sequenceDiagram' in Mermaid that illustrates a typical user request lifecycle.
       `,
       summary
     );
@@ -69,7 +66,7 @@ export function buildArchitecturePagePrompt(summary) {
 export function buildGettingStartedPagePrompt(summary) {
     return buildPagePrompt(
       "Getting Started",
-      "Generate a step-by-step guide for new developers. Include sections for Prerequisites, Installation, Environment Setup (mention .env files), and how to run common commands (dev, build, test, lint).",
+      "Generate a step-by-step guide for new developers. Include sections for Prerequisites, Installation, Environment Setup, and how to run common commands (dev, build, test, lint).",
       summary
     );
 }
@@ -77,25 +74,37 @@ export function buildGettingStartedPagePrompt(summary) {
 export function buildApiSchemaPagePrompt(summary) {
     return buildPagePrompt(
       "API Schema",
-      "Create a single, comprehensive HTML table for all unique API endpoints found in the summaries. Consolidate data for the same endpoint if found in multiple files. The table columns should be: Endpoint, Method, Description, Payload Structure, and Response Structure. For structure columns, use <code> tags. If a value is not found, use 'N/A'.",
+      "Create a single, comprehensive HTML table for all unique API endpoints. The table columns should be: Endpoint, Method, Description, Payload Structure, and Response Structure. Use <code> tags for structures.",
       summary
     );
 }
 
-// New prompt for the Code Conventions page
+// ENHANCED prompt for the Conventions page
 export function buildConventionsPagePrompt(summary) {
     return buildPagePrompt(
-        "Code Conventions & Glossary",
+        "Development & Conventions",
         `
-        Generate a page with helpful information for new developers onboarding to the codebase. Include the following sections:
+        Generate a page with helpful information for new developers. Include the following sections:
+        1.  **Development Workflow**: Describe the typical developer workflow from getting a ticket to merging a pull request. Mention quality assurance steps like linting and code reviews.
+        2.  **High-Level Code Explanation**: Describe common coding patterns, the primary state management approach, and how data fetching is handled.
+        3.  **Key Dependencies**: Highlight the most critical libraries and briefly explain their role in the project.
+        4.  **Glossary**: Create a list of any project-specific or domain-specific terms and their meanings.
+        `,
+        summary
+    );
+}
 
-        1.  **High-Level Code Explanation**: Based on the project summaries, describe the common coding patterns. Explain the primary state management approach, how data fetching is handled (e.g., hooks, services), and the overall code style (e.g., functional components, async/await).
-
-        2.  **Key Dependencies**: Create a section highlighting the most critical libraries. For each, provide a brief explanation of its role in the project.
-
-        3.  **Testing Strategy**: If testing libraries (like Jest, Vitest, Cypress, Testing Library) are detected in the tech stack, briefly describe the project's likely testing strategy (e.g., "Unit tests for components, integration tests for user flows").
-
-        4.  **Glossary**: Create a list of any project-specific or domain-specific terms and their meanings, inferred from file names and summaries.
+// NEW prompt for the Build & Deployment page
+export function buildBuildPagePrompt(summary) {
+    return buildPagePrompt(
+        "Build & Deployment",
+        `
+        Generate a detailed overview of the project's operational aspects. Include the following sections:
+        1.  **Build System & Dependency Management**: Analyze 'package.json' to describe the build system and how dependencies are managed (e.g., npm, yarn, pnpm). List key build tools (e.g., Vite, Webpack).
+        2.  **CI/CD Pipeline**: Look for CI/CD configuration files (e.g., in '.github/workflows'). If found, describe the pipeline architecture and create a Mermaid 'graph TD' diagram of the workflow stages (e.g., Push -> Lint -> Test -> Build -> Deploy). If not found, state that the pipeline could not be inferred.
+        3.  **Testing Strategy**: Based on testing libraries found, describe the project's testing strategy (Unit, Integration, E2E) and how test scripts in 'package.json' are used.
+        4.  **Release Process**: Describe the likely release process. Is it manual or automated via the CI/CD pipeline? Is there a versioning script?
+        5.  **Bundle Size & Performance**: Mention any tools or scripts found for bundle size analysis or performance monitoring.
         `,
         summary
     );

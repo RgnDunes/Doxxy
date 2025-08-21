@@ -31,8 +31,13 @@ const siteStructure = [
     },
     {
         fileName: "conventions.html",
-        title: "Code Conventions",
+        title: "Dev & Conventions", // Renamed for clarity
         prompt: prompts.buildConventionsPagePrompt,
+    },
+    {
+        fileName: "build-and-deployment.html",
+        title: "Build & Deployment",
+        prompt: prompts.buildBuildPagePrompt,
     },
 ];
 
@@ -59,7 +64,8 @@ function getHtmlShell(title, content, projectName) {
                     <li><a href="architecture.html">Architecture</a></li>
                     <li><a href="getting-started.html">Getting Started</a></li>
                     <li><a href="api-schema.html">API Schema</a></li>
-                    <li><a href="conventions.html">Code Conventions</a></li>
+                    <li><a href="conventions.html">Dev & Conventions</a></li>
+                    <li><a href="build-and-deployment.html">Build & Deployment</a></li>
                 </ul>
             </nav>
         </aside>
