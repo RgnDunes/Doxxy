@@ -1,6 +1,5 @@
 // src/prompt-builder.js
 
-// Re-introduce the exported constant with the detailed API instructions.
 export const ANALYSIS_PROMPT_SCAFFOLD = `
 You are a static analysis engine. Analyze the provided code chunk and respond ONLY with a single JSON object.
 Do not include any text outside the JSON structure.
@@ -17,7 +16,6 @@ Analyze the following code context:
 --- END OF CODE CHUNK ---
 `;
 
-// This function now correctly uses the scaffold.
 export function buildAnalysisPrompt(chunk) {
   return ANALYSIS_PROMPT_SCAFFOLD.replace('{CODE_CHUNK}', chunk);
 }
@@ -52,12 +50,21 @@ export function buildIndexPagePrompt(summary) {
   );
 }
 
+// ########## UPDATED ARCHITECTURE PROMPT ##########
 export function buildArchitecturePagePrompt(summary) {
-  return buildPagePrompt(
-    "Architecture",
-    "Provide a high-level architectural overview. Create two Mermaid diagrams in <pre class='mermaid'> tags: 1. A 'graph TD' showing system/data flow between modules. 2. A 'sequenceDiagram' showing a typical request lifecycle (e.g., UI -> State -> API -> Backend).",
-    summary
-  );
+    return buildPagePrompt(
+      "Architecture",
+      `
+      Generate a detailed architectural overview with three sections:
+
+      1.  **File Structure Organization**: Create a section that describes the purpose of the main directories (e.g., 'src', 'components', 'pages', 'api', 'lib', 'services'). If you detect evidence of a monorepo (e.g., 'packages' or 'apps' folders), add a subsection explaining how the different packages interact.
+
+      2.  **High-Level System Overview**: Create a detailed Mermaid 'graph TD' diagram. This diagram should be comprehensive, inspired by diagrams used to document complex web applications. Organize it into logical subgraphs representing conceptual layers like 'Frontend Components', 'State Management', 'Data & Caching', 'Network Layer', and 'Backend Services/APIs'. Map the key modules, components, and services from the project summary into their appropriate subgraphs and show the data flow between them.
+
+      3.  **Request Lifecycle**: Create a 'sequenceDiagram' in Mermaid that illustrates a typical user request lifecycle, from the UI through to the backend and back.
+      `,
+      summary
+    );
 }
 
 export function buildGettingStartedPagePrompt(summary) {
