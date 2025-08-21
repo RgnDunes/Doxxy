@@ -29,6 +29,11 @@ const siteStructure = [
         title: "API Schema",
         prompt: prompts.buildApiSchemaPagePrompt,
     },
+    {
+        fileName: "conventions.html",
+        title: "Code Conventions",
+        prompt: prompts.buildConventionsPagePrompt,
+    },
 ];
 
 function getHtmlShell(title, content, projectName) {
@@ -54,6 +59,7 @@ function getHtmlShell(title, content, projectName) {
                     <li><a href="architecture.html">Architecture</a></li>
                     <li><a href="getting-started.html">Getting Started</a></li>
                     <li><a href="api-schema.html">API Schema</a></li>
+                    <li><a href="conventions.html">Code Conventions</a></li>
                 </ul>
             </nav>
         </aside>

@@ -50,7 +50,6 @@ export function buildIndexPagePrompt(summary) {
   );
 }
 
-// ########## UPDATED ARCHITECTURE PROMPT ##########
 export function buildArchitecturePagePrompt(summary) {
     return buildPagePrompt(
       "Architecture",
@@ -80,5 +79,24 @@ export function buildApiSchemaPagePrompt(summary) {
       "API Schema",
       "Create a single, comprehensive HTML table for all unique API endpoints found in the summaries. Consolidate data for the same endpoint if found in multiple files. The table columns should be: Endpoint, Method, Description, Payload Structure, and Response Structure. For structure columns, use <code> tags. If a value is not found, use 'N/A'.",
       summary
+    );
+}
+
+// New prompt for the Code Conventions page
+export function buildConventionsPagePrompt(summary) {
+    return buildPagePrompt(
+        "Code Conventions & Glossary",
+        `
+        Generate a page with helpful information for new developers onboarding to the codebase. Include the following sections:
+
+        1.  **High-Level Code Explanation**: Based on the project summaries, describe the common coding patterns. Explain the primary state management approach, how data fetching is handled (e.g., hooks, services), and the overall code style (e.g., functional components, async/await).
+
+        2.  **Key Dependencies**: Create a section highlighting the most critical libraries. For each, provide a brief explanation of its role in the project.
+
+        3.  **Testing Strategy**: If testing libraries (like Jest, Vitest, Cypress, Testing Library) are detected in the tech stack, briefly describe the project's likely testing strategy (e.g., "Unit tests for components, integration tests for user flows").
+
+        4.  **Glossary**: Create a list of any project-specific or domain-specific terms and their meanings, inferred from file names and summaries.
+        `,
+        summary
     );
 }
