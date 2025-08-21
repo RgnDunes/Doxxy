@@ -7,6 +7,7 @@ import * as prompts from './prompt-builder.js';
 import { getCss } from './templates/css.js';
 import { getJs } from './templates/js.js';
 
+// Add the new page to the site structure
 const siteStructure = [
     {
         fileName: "index.html",
@@ -23,6 +24,11 @@ const siteStructure = [
         title: "Getting Started",
         prompt: prompts.buildGettingStartedPagePrompt,
     },
+    {
+        fileName: "api-schema.html",
+        title: "API Schema",
+        prompt: prompts.buildApiSchemaPagePrompt,
+    },
 ];
 
 function getHtmlShell(title, content, projectName) {
@@ -31,7 +37,7 @@ function getHtmlShell(title, content, projectName) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
     <title>${title}</title>
     <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -47,6 +53,7 @@ function getHtmlShell(title, content, projectName) {
                     <li><a href="index.html">Overview</a></li>
                     <li><a href="architecture.html">Architecture</a></li>
                     <li><a href="getting-started.html">Getting Started</a></li>
+                    <li><a href="api-schema.html">API Schema</a></li>
                 </ul>
             </nav>
         </aside>
