@@ -33,7 +33,7 @@ async function startMcpServer() {
         const summary = `Documentation generated for ${codebasePath}. Site written to ${relativeOutputDir}. Artifacts: ${Object.keys(analysisResult).length} data files.`;
 
         return {
-          content: JSON.stringify({ path: result.outputPath, summary: result.summary }),
+          content: JSON.stringify({ path: outputDir, summary: summary }),
         };
       } catch (error) {
         console.error('MCP Tool Error:', error);
