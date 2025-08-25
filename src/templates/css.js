@@ -32,41 +32,25 @@ export function getCss() {
   .container {
       display: flex;
   }
-  
-  .sidebar {
-      width: 260px;
-      flex-shrink: 0;
-      background-color: var(--sidebar-bg);
-      border-right: 1px solid var(--border-color);
-      height: 100vh;
-      position: sticky;
-      top: 0;
-      padding: 1.5rem;
-  }
-  
-  .sidebar-header {
-      margin-bottom: 2rem;
-      padding-left: 0.75rem;
-  }
-  
-  .main-title {
-      display: block;
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: var(--text-color);
-  }
-  
-  .sub-title {
-      display: block;
-      font-size: 1rem;
-      color: var(--text-color-light);
-      margin-top: 0.25rem;
-  }
-  
+
   .sidebar nav ul {
       list-style: none;
       padding: 0;
       margin: 0;
+  }
+
+  .sidebar nav ul ul {
+      padding-left: 1.2rem;
+      margin-top: 0.25rem;
+  }
+
+  .sidebar nav li strong {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      margin-top: 0.75rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-color-light);
   }
   
   .sidebar nav a {
@@ -81,6 +65,25 @@ export function getCss() {
   
   .sidebar nav a:hover {
       background-color: var(--accent-color-light);
+  }
+
+  .sidebar nav a.active {
+      background-color: var(--accent-color);
+      font-weight: 600;
+  }
+  
+  .main-title {
+      display: block;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-color);
+  }
+  
+  .sub-title {
+      display: block;
+      font-size: 1rem;
+      color: var(--text-color-light);
+      margin-top: 0.25rem;
   }
   
   .content {

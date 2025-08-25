@@ -11,7 +11,7 @@ import { getJs } from './templates/js.js';
 const siteStructure = [
     {
         fileName: "index.html",
-        title: "Project Overview",
+        title: "Overview",
         prompt: prompts.buildIndexPagePrompt,
     },
     {
@@ -25,23 +25,45 @@ const siteStructure = [
         prompt: prompts.buildGettingStartedPagePrompt,
     },
     {
-        fileName: "api-schema.html",
-        title: "API Schema",
-        prompt: prompts.buildApiSchemaPagePrompt,
-    },
-    {
-        fileName: "conventions.html",
-        title: "Dev & Conventions", // Renamed for clarity
-        prompt: prompts.buildConventionsPagePrompt,
-    },
-    {
-        fileName: "build-and-deployment.html",
-        title: "Build & Deployment",
-        prompt: prompts.buildBuildPagePrompt,
+        title: "Analysis Modules",
+        children: [
+            {
+                fileName: "api-schema.html",
+                title: "API Schema",
+                prompt: prompts.buildApiSchemaPagePrompt,
+            },
+            {
+                fileName: "conventions.html",
+                title: "Dev & Conventions",
+                prompt: prompts.buildConventionsPagePrompt,
+            },
+            {
+                fileName: "build-and-deployment.html",
+                title: "Build & Deployment",
+                prompt: prompts.buildBuildPagePrompt,
+            },
+        ],
     },
 ];
 
-function getHtmlShell(title, content, projectName) {
+function generateNavLinks(structure, currentFile) {
+    let navHtml = '<ul>';
+    for (const item of structure) {
+        if (item.children) {
+            navHtml += `<li><strong>${item.title}</strong>`;
+            navHtml += generateNavLinks(item.children, currentFile); // Recursive call for nested items
+            navHtml += '</li>';
+        } else {
+            const isActive = item.fileName === currentFile ? 'class="active"' : '';
+            navHtml += `<li><a href="${item.fileName}" ${isActive}>${item.title}</a></li>`;
+        }
+    }
+    navHtml += '</ul>';
+    return navHtml;
+}
+
+function getHtmlShell(title, content, projectName, currentFile) {
+    const navLinks = generateNavLinks(siteStructure, currentFile);
     return `
 <!DOCTYPE html>
 <html lang="en">
@@ -59,14 +81,7 @@ function getHtmlShell(title, content, projectName) {
                 <span class="sub-title">${projectName}</span>
             </div>
             <nav>
-                <ul>
-                    <li><a href="index.html">Overview</a></li>
-                    <li><a href="architecture.html">Architecture</a></li>
-                    <li><a href="getting-started.html">Getting Started</a></li>
-                    <li><a href="api-schema.html">API Schema</a></li>
-                    <li><a href="conventions.html">Dev & Conventions</a></li>
-                    <li><a href="build-and-deployment.html">Build & Deployment</a></li>
-                </ul>
+                ${navLinks}
             </nav>
         </aside>
         <main class="content">
@@ -84,20 +99,30 @@ function getHtmlShell(title, content, projectName) {
 </html>`;
 }
 
+async function generatePage(page, outputDir, summary) {
+    console.log(`   Generating page: ${page.title}...`);
+    const pagePrompt = page.prompt(summary, summary.dependencyGraph, summary.workflowGraph);
+    let pageContent = await getAiResponse(pagePrompt);
+
+    pageContent = pageContent.replace(/^```html\n?/, '').replace(/\n?```$/, '');
+    
+    const fullHtml = getHtmlShell(`${page.title} | ${summary.projectName}`, pageContent, summary.projectName, page.fileName);
+    await fs.writeFile(path.join(outputDir, page.fileName), fullHtml);
+}
+
 export async function generateSite(outputDir, summary) {
     await fs.mkdir(path.join(outputDir, 'assets'), { recursive: true });
 
     await fs.writeFile(path.join(outputDir, 'assets/style.css'), getCss());
     await fs.writeFile(path.join(outputDir, 'assets/app.js'), getJs());
 
-    for (const page of siteStructure) {
-        console.log(`   Generating page: ${page.title}...`);
-        const pagePrompt = page.prompt(summary, summary.mermaidGraph);
-        let pageContent = await getAiResponse(pagePrompt);
-
-        pageContent = pageContent.replace(/^```html\n?/, '').replace(/\n?```$/, '');
-
-        const fullHtml = getHtmlShell(`${page.title} | ${summary.projectName}`, pageContent, summary.projectName);
-        await fs.writeFile(path.join(outputDir, page.fileName), fullHtml);
+    for (const item of siteStructure) {
+        if (item.children) {
+            for (const childPage of item.children) {
+                await generatePage(childPage, outputDir, summary);
+            }
+        } else {
+            await generatePage(item, outputDir, summary);
+        }
     }
 }
