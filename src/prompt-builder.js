@@ -50,17 +50,21 @@ export function buildIndexPagePrompt(summary) {
   );
 }
 
-export function buildArchitecturePagePrompt(summary) {
-    return buildPagePrompt(
-      "Architecture",
-      `
-      Generate a detailed architectural overview with three sections:
-      1.  **File Structure Organization**: Describe the purpose of the main directories. If you detect a monorepo, add a subsection explaining how the packages interact.
-      2.  **High-Level System Overview**: Create a detailed Mermaid 'graph TD' diagram showing the system's conceptual layers (e.g., 'Frontend', 'State Management', 'Backend Services') and the data flow between them.
-      3.  **Request Lifecycle**: Create a 'sequenceDiagram' in Mermaid that illustrates a typical user request lifecycle.
-      `,
-      summary
-    );
+export function buildArchitecturePagePrompt(summary, mermaidGraph) {
+  return buildPagePrompt(
+    "Architecture",
+    `
+    Generate a detailed architectural overview with two sections:
+    1.  **High-Level System Overview**: Use the provided Mermaid diagram, which illustrates the file dependencies, to explain the overall architecture. Describe how the different modules and files interact with each other based on the diagram.
+    2.  **File Structure Organization**: Describe the purpose of the main directories and files.
+
+    **Mermaid Diagram of File Dependencies:**
+    \`\`\`mermaid
+    ${mermaidGraph}
+    \`\`\`
+    `,
+    summary
+  );
 }
 
 export function buildGettingStartedPagePrompt(summary) {

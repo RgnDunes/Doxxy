@@ -5,31 +5,32 @@
     "type": "module",
     "main": "src/index.js",
     "bin": {
-      "doxxy-docs": "./bin/docs.js"
+        "doxxy-docs": "./bin/docs.js"
     },
     "scripts": {
-      "docs": "node ./bin/docs.js"
+        "docs": "node ./bin/docs.js"
     },
     "keywords": [
-      "documentation",
-      "static-analysis",
-      "react",
-      "typescript",
-      "overview",
-      "ai",
-      "deepwiki"
+        "documentation",
+        "static-analysis",
+        "react",
+        "typescript",
+        "overview",
+        "ai",
+        "deepwiki"
     ],
     "author": "Doxxy Team",
     "license": "MIT",
     "dependencies": {
-      "@babel/parser": "^7.24.7",
-      "@dqbd/tiktoken": "^1.0.13",
-      "dotenv": "^16.4.5",
-      "globby": "^14.0.1",
-      "openai": "^4.52.7",
-      "yargs": "^17.7.2"
+        "@babel/parser": "^7.24.7",
+        "@babel/traverse": "^7.28.3",
+        "@dqbd/tiktoken": "^1.0.13",
+        "dotenv": "^16.4.5",
+        "globby": "^14.0.1",
+        "openai": "^4.52.7",
+        "yargs": "^17.7.2"
     },
     "engines": {
-      "node": ">=18.0.0"
+        "node": ">=18.0.0"
     }
-  }
+}

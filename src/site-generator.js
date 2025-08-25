@@ -92,11 +92,11 @@ export async function generateSite(outputDir, summary) {
 
     for (const page of siteStructure) {
         console.log(`   Generating page: ${page.title}...`);
-        const pagePrompt = page.prompt(summary);
+        const pagePrompt = page.prompt(summary, summary.mermaidGraph);
         let pageContent = await getAiResponse(pagePrompt);
 
         pageContent = pageContent.replace(/^```html\n?/, '').replace(/\n?```$/, '');
-        
+
         const fullHtml = getHtmlShell(`${page.title} | ${summary.projectName}`, pageContent, summary.projectName);
         await fs.writeFile(path.join(outputDir, page.fileName), fullHtml);
     }
