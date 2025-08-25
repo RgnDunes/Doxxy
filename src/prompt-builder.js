@@ -50,17 +50,22 @@ export function buildIndexPagePrompt(summary) {
   );
 }
 
-export function buildArchitecturePagePrompt(summary, mermaidGraph) {
+export function buildArchitecturePagePrompt(summary, dependencyGraph, workflowGraph) {
   return buildPagePrompt(
     "Architecture",
     `
-    Generate a detailed architectural overview with two sections:
-    1.  **High-Level System Overview**: Use the provided Mermaid diagram, which illustrates the file dependencies, to explain the overall architecture. Describe how the different modules and files interact with each other based on the diagram.
-    2.  **File Structure Organization**: Describe the purpose of the main directories and files.
+    Generate a detailed architectural overview with two sections based on the diagrams provided:
+    1.  **File Dependency Graph**: The following diagram illustrates how files in the target codebase import each other. Use it to explain the static relationships and dependencies between different modules.
+    2.  **Developer Workflow**: This flowchart, generated from the project's 'package.json', shows the typical sequence of commands a developer would use to build, test, and run the project. Explain the purpose of each step in the workflow.
 
     **Mermaid Diagram of File Dependencies:**
     \`\`\`mermaid
-    ${mermaidGraph}
+    ${dependencyGraph}
+    \`\`\`
+
+    **Mermaid Diagram of Developer Workflow:**
+    \`\`\`mermaid
+    ${workflowGraph}
     \`\`\`
     `,
     summary
